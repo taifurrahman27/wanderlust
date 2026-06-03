@@ -27,6 +27,7 @@ const DestinationDetailsPage = async ({ params }) => {
                 src={imageUrl}
                 height={500}
                 width={800}
+                unoptimized
             />
 
             <div className="flex justify-between gap-10">
