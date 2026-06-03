@@ -20,7 +20,8 @@ const BookingCard = ({ destination }) => {
             price,
             imageUrl,
             country,
-            departureDate: new Date(departureDate)
+            departureDate: departureDate?.toString(),
+
         }
 
 

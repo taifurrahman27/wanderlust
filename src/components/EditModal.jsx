@@ -1,6 +1,5 @@
 "use client";
 
-import { Envelope } from "@gravity-ui/icons";
 import {
     Button,
     FieldError,
@@ -30,63 +29,109 @@ export function EditModal({ destination }) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+
         const formData = new FormData(e.currentTarget);
-        const destination = Object.fromEntries(formData.entries());
+        const updatedDestination = Object.fromEntries(formData.entries());
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/destination/${_id}`, {
-            method: "PATCH",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(destination),
-            credentials: "include"
-        });
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/destination/${_id}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify(updatedDestination),
+                }
+            );
 
-        const data = await res.json();
-        console.log(data);
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
+
     return (
         <Modal>
-
-            <Button variant="outline" className={"rounded-none"}>
-                <BiEdit /> Edit
+            <Button
+                color="primary"
+                variant="flat"
+                className="rounded-xl"
+            >
+                <BiEdit className="text-lg" />
+                Edit Destination
             </Button>
 
             <Modal.Backdrop>
-                <Modal.Container placement="auto">
-                    <Modal.Dialog className="sm:max-w-xl">
+                <Modal.Container placement="center">
+                    <Modal.Dialog className="max-w-4xl rounded-3xl overflow-hidden">
                         <Modal.CloseTrigger />
-                        <Modal.Header>
-                            <Modal.Heading>Edit Destination</Modal.Heading>
+
+                        <Modal.Header className="border-b bg-default-50 px-8 py-6">
+                            <div>
+                                <Modal.Heading className="text-2xl font-bold">
+                                    Edit Destination
+                                </Modal.Heading>
+
+                                <p className="text-sm text-default-500 mt-1">
+                                    Update destination details and travel information.
+                                </p>
+                            </div>
                         </Modal.Header>
-                        <Modal.Body className="p-6">
-                            <Surface variant="default">
-                                <form onSubmit={onSubmit} className="p-10 space-y-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        {/* Destination Name */}
-                                        <div className="md:col-span-2">
+
+                        <Modal.Body className="p-0">
+                            <Surface
+                                variant="default"
+                                className="rounded-none shadow-none"
+                            >
+                                <form
+                                    onSubmit={onSubmit}
+                                    className="p-8 md:p-10 space-y-10"
+                                >
+                                    <div>
+                                        <h3 className="text-lg font-semibold">
+                                            Destination Information
+                                        </h3>
+
+                                        <p className="text-sm text-default-500">
+                                            Basic details about the destination.
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <div className="lg:col-span-2">
                                             <TextField
                                                 defaultValue={destinationName}
                                                 name="destinationName"
                                                 isRequired
                                             >
                                                 <Label>Destination Name</Label>
+
                                                 <Input
                                                     placeholder="Bali Paradise"
-                                                    className="rounded-2xl"
+                                                    className="rounded-xl"
                                                 />
+
                                                 <FieldError />
                                             </TextField>
                                         </div>
 
-                                        {/* Country */}
-                                        <TextField defaultValue={country} name="country" isRequired>
+                                        <TextField
+                                            defaultValue={country}
+                                            name="country"
+                                            isRequired
+                                        >
                                             <Label>Country</Label>
-                                            <Input placeholder="Indonesia" className="rounded-2xl" />
+
+                                            <Input
+                                                placeholder="Indonesia"
+                                                className="rounded-xl"
+                                            />
+
                                             <FieldError />
                                         </TextField>
 
-                                        {/* Category - Updated Select Component */}
                                         <div>
                                             <Select
                                                 defaultValue={category}
@@ -96,42 +141,42 @@ export function EditModal({ destination }) {
                                                 placeholder="Select category"
                                             >
                                                 <Label>Category</Label>
-                                                <Select.Trigger className="rounded-2xl">
+
+                                                <Select.Trigger className="rounded-xl">
                                                     <Select.Value />
                                                     <Select.Indicator />
                                                 </Select.Trigger>
+
                                                 <Select.Popover>
                                                     <ListBox>
-                                                        <ListBox.Item id="Beach" textValue="Beach">
+                                                        <ListBox.Item id="Beach">
                                                             Beach
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
-                                                        <ListBox.Item id="Mountain" textValue="Mountain">
+
+                                                        <ListBox.Item id="Mountain">
                                                             Mountain
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
-                                                        <ListBox.Item id="City" textValue="City">
+
+                                                        <ListBox.Item id="City">
                                                             City
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
-                                                        <ListBox.Item id="Adventure" textValue="Adventure">
+
+                                                        <ListBox.Item id="Adventure">
                                                             Adventure
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
-                                                        <ListBox.Item id="Cultural" textValue="Cultural">
+
+                                                        <ListBox.Item id="Cultural">
                                                             Cultural
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
-                                                        <ListBox.Item id="Luxury" textValue="Luxury">
+
+                                                        <ListBox.Item id="Luxury">
                                                             Luxury
-                                                            <ListBox.ItemIndicator />
                                                         </ListBox.Item>
                                                     </ListBox>
                                                 </Select.Popover>
                                             </Select>
                                         </div>
 
-                                        {/* Price */}
                                         <TextField
                                             defaultValue={price}
                                             name="price"
@@ -139,30 +184,32 @@ export function EditModal({ destination }) {
                                             isRequired
                                         >
                                             <Label>Price (USD)</Label>
+
                                             <Input
                                                 type="number"
                                                 placeholder="1299"
-                                                className="rounded-2xl"
+                                                className="rounded-xl"
                                             />
+
                                             <FieldError />
                                         </TextField>
 
-                                        {/* Duration */}
                                         <TextField
                                             defaultValue={duration}
                                             name="duration"
                                             isRequired
                                         >
                                             <Label>Duration</Label>
+
                                             <Input
                                                 placeholder="7 Days / 6 Nights"
-                                                className="rounded-2xl"
+                                                className="rounded-xl"
                                             />
+
                                             <FieldError />
                                         </TextField>
 
-                                        {/* Departure Date */}
-                                        <div className="md:col-span-2">
+                                        <div className="lg:col-span-2">
                                             <TextField
                                                 defaultValue={departureDate}
                                                 name="departureDate"
@@ -170,50 +217,66 @@ export function EditModal({ destination }) {
                                                 isRequired
                                             >
                                                 <Label>Departure Date</Label>
-                                                <Input type="date" className="rounded-2xl" />
+
+                                                <Input
+                                                    type="date"
+                                                    className="rounded-xl"
+                                                />
+
                                                 <FieldError />
                                             </TextField>
                                         </div>
 
-                                        {/* Image URL - Removed preview */}
-                                        <div className="md:col-span-2">
+                                        <div className="lg:col-span-2">
                                             <TextField
                                                 defaultValue={imageUrl}
                                                 name="imageUrl"
                                                 isRequired
                                             >
                                                 <Label>Image URL</Label>
+
                                                 <Input
                                                     type="url"
-                                                    placeholder="https://example.com/bali-paradise.jpg"
-                                                    className="rounded-2xl"
+                                                    placeholder="https://example.com/image.jpg"
+                                                    className="rounded-xl"
                                                 />
+
                                                 <FieldError />
                                             </TextField>
                                         </div>
 
-                                        {/* Description */}
-                                        <div className="md:col-span-2">
+                                        <div className="lg:col-span-2">
                                             <TextField
                                                 defaultValue={description}
                                                 name="description"
                                                 isRequired
                                             >
                                                 <Label>Description</Label>
+
                                                 <TextArea
                                                     placeholder="Describe the travel experience..."
-                                                    className="rounded-3xl"
+                                                    className="rounded-2xl min-h-32"
                                                 />
+
                                                 <FieldError />
                                             </TextField>
                                         </div>
                                     </div>
 
-                                    {/* Buttons */}
+                                    <Modal.Footer className="border-t bg-default-50 px-0 pt-6 flex justify-end gap-3">
+                                        <Button
+                                            variant="outline"
+                                            slot="close"
+                                        >
+                                            Cancel
+                                        </Button>
 
-                                    <Modal.Footer>
-                                        <Button type="submit" slot="close">
-                                            Save
+                                        <Button
+                                            color="primary"
+                                            type="submit"
+                                            slot="close"
+                                        >
+                                            Save Changes
                                         </Button>
                                     </Modal.Footer>
                                 </form>
