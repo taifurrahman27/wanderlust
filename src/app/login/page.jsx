@@ -36,6 +36,23 @@ const LoginPage = () => {
     };
 
 
+    const handleGoogleSignin = async () => {
+        await authClient.signIn.social({
+            provider: "google"
+        })
+        if (data) {
+            alert("Sign up successful")
+            redirect("/");
+        }
+
+        if (error) {
+            alert("Error");
+
+        }
+
+    };
+
+
     return (
         <>
 
@@ -142,7 +159,9 @@ const LoginPage = () => {
                             <Separator />
                         </div>
 
-                        <Button className="wl-google-btn">
+                        <Button className="wl-google-btn"
+                            onClick={handleGoogleSignin}
+                        >
                             <FcGoogle size={18} />
                             Continue with Google
                         </Button>

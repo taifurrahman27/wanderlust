@@ -35,6 +35,7 @@ const SignUpPage = () => {
 
 
         if (data) {
+            alert("Sign up successful")
             redirect("/");
         }
 
@@ -43,6 +44,23 @@ const SignUpPage = () => {
 
         }
     };
+
+    const handleGoogleSignin = async () => {
+        await authClient.signIn.social({
+            provider: "google"
+        })
+        if (data) {
+            alert("Sign up successful")
+            redirect("/");
+        }
+
+        if (error) {
+            alert("Error");
+
+        }
+
+    };
+
 
     return (
         <div className="min-h-screen bg-linear-to-br from-cyan-50 via-white to-sky-100 flex items-center justify-center p-4 md:p-8">
@@ -192,6 +210,7 @@ const SignUpPage = () => {
 
                         <Button
                             variant="bordered"
+                            onClick={handleGoogleSignin}
                             className="w-full h-12 rounded-xl font-medium"
                         >
                             <FcGoogle className="text-xl" />
