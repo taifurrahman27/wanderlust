@@ -13,7 +13,7 @@ import {
     TextField,
 } from "@heroui/react";
 import { redirect } from "next/navigation";
-import { authClient } from "../../lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 const SignUpPage = () => {
     const onSubmit = async (e) => {
@@ -22,12 +22,17 @@ const SignUpPage = () => {
         const formData = new FormData(e.currentTarget);
         const user = Object.fromEntries(formData.entries());
 
+        console.log(user, "User after form fillup")
+
+
         const { data, error } = await authClient.signUp.email({
             email: user.email,
             password: user.password,
             name: user.name,
             image: user.image,
         });
+        console.log(data, "data after signup");
+
 
         if (data) {
             redirect("/");
@@ -35,6 +40,7 @@ const SignUpPage = () => {
 
         if (error) {
             alert("Error");
+
         }
     };
 
@@ -149,12 +155,7 @@ const SignUpPage = () => {
                                     if (value.length < 8) {
                                         return "Password must be at least 8 characters";
                                     }
-                                    if (!/[A-Z]/.test(value)) {
-                                        return "Password must contain at least one uppercase letter";
-                                    }
-                                    if (!/[0-9]/.test(value)) {
-                                        return "Password must contain at least one number";
-                                    }
+
                                     return null;
                                 }}
                             >

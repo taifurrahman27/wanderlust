@@ -1,8 +1,20 @@
+"use client"
+import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
+
+    const {
+        data: session,
+    } = authClient.useSession()
+    console.log(session, "User session");
+    const user = session?.user;
+    console.log(user, "user data");
+
+
+
     return (
         <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200">
             <nav className="max-w-7xl mx-auto px-4 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
